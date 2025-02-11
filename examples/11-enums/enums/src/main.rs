@@ -1,5 +1,5 @@
 enum DiskType {
-    SSD,
+    SSD, //This is called a "variant"
     HDD,
 }
 #[derive(Debug)]

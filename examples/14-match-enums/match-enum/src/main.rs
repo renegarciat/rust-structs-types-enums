@@ -1,28 +1,32 @@
+use std::io::Bytes;
+
 enum FileSize {
     Bytes(u64),
-    Kilobytes(f64),
-    Megabytes(f64),
-    Gigabytes(f64),
+    Kibibytes(u64),
+    Mebibytes(u64),
+    Gibibytes(u64),
 }
 
-fn format_size(size: u64) -> String {
-    let filesize = match size {
-        0..=999 => FileSize::Bytes(size),
-        1000..=999_999 => FileSize::Kilobytes(size as f64 / 1000.0),
-        1_000_000..=999_999_999 => FileSize::Megabytes(size as f64 / 1_000_000.0),
-        _ => FileSize::Gigabytes(size as f64 / 1_000_000_000.0),
-    };
-
-    match filesize {
-        FileSize::Bytes(bytes) => format!("{} bytes", bytes),
-        FileSize::Kilobytes(kb) => format!("{:.2} KB", kb),
-        FileSize::Megabytes(mb) => format!("{:.2} MB", mb),
-        FileSize::Gigabytes(gb) => format!("{:.2} GB", gb),
+impl FileSize {
+    // Lets use Binary magnitudes instead!
+    fn format_size(&self) -> String {
+        match self {
+            FileSize::Bytes(bytes) => format!("{} bytes", bytes),
+            FileSize::Kibibytes(kb) => format!("{:.2} KiB", *kb as f64 / 1024.0),
+            FileSize::Mebibytes(mb) => format!("{:.2} MiB", *mb as f64 / (1024^2) as f64),
+            FileSize::Gibibytes(gb) => format!("{:.2} GiB", *gb as f64 / (1024^3) as f64),
+        }
     }
 }
 
 
 fn main() {
-    let result = format_size(6888837399);
-    println!("{}", result)
+    let size = 10000000000;
+    let filezise = match size {
+        0..1024 => FileSize::Bytes(size),
+        1024..1048576 => FileSize::Kibibytes(size),
+        1048576..1073741824 => FileSize::Mebibytes(size),
+        _ => FileSize::Gibibytes(size)
+    };
+    println!("File size: {}", filezise.format_size());
 }
