@@ -1,3 +1,5 @@
+use std::ops::Not;
+
 fn print_str(s: &str) {
     let new_string = format!("{}! other stuff here", s);
     println!("{}", new_string);
@@ -13,6 +15,6 @@ fn main() {
 
     // String is growable and mutable whereas str is not.
     // String is owned by the code that creates it
-    let mut salutation = String::from("hello");
+    let mut salutation = "hello".to_string();//String::from("hello");
     print_string(salutation);
 }
