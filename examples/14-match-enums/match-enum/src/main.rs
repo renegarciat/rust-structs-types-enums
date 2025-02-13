@@ -1,4 +1,3 @@
-use std::io::Bytes;
 
 enum FileSize {
     Bytes(u64),
@@ -8,10 +7,10 @@ enum FileSize {
     Tebibytes(u64),
 }
 
-const KiB: u64 = 2^10;
-const MiB: u64 = 2^20;
-const GiB: u64 = 2^30;
-const TiB: u64 = 2^40;
+const KiB: u64 = 2u64.pow(10);
+const MiB: u64 = 2u64.pow(20);
+const GiB: u64 = 2u64.pow(30);
+const TiB: u64 = 2u64.pow(40);
 
 impl FileSize {
     // Lets use Binary magnitudes instead!
@@ -28,7 +27,7 @@ impl FileSize {
 
 
 fn main() {
-    let size = 100000000;
+    let size = 10000000000;
     let filezise = match size {
         0..KiB => FileSize::Bytes(size),
         KiB..MiB => FileSize::Kibibytes(size),
